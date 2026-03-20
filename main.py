@@ -1,6 +1,8 @@
-import torch
-import spacy
-import fastapi
-import pandas
+from app.core.logger import get_logger
+log = get_logger()
 
-print("Environment OK")
+def main():
+    log.info("Feedack AI System Started")
+
+if __name__ =="__main__":
+    main()
