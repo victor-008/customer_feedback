@@ -1,0 +1,18 @@
+from sqlalchemy import Column, Integer, String, Text, DateTime
+from datetime import datetime
+from app.database.db import Base
+
+class Feedback(Base):
+    __tablename__ = "feedback"
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(Text)
+    category = Column(String)
+    #complaint / compliment
+
+    problem = Column(String)
+    customer_solution = Column(String)
+    solution_valid = Column(String)
+    recommended_solution = Column(String)
+
+    created_at = Column(DateTime, 
+                        default=datetime.utcnow)
