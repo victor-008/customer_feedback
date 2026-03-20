@@ -2,7 +2,7 @@ from app.database.models import Feedback
 from app.database.db import SessionLocal
 
 def save_feedback(result: dict):
-    
+
     db = SessionLocal()
 
     fb = Feedback(
@@ -17,3 +17,11 @@ def save_feedback(result: dict):
     db.add(fb)
     db.commit()
     db.close()
+
+
+#added later after fastapi
+def get_all_feedback():
+    db = SessionLocal()
+    data = db.query(Feedback).all()
+    db.close()
+    return data
