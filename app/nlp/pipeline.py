@@ -5,27 +5,51 @@ from app.nlp.solution_detector import detect_solution
 from app.nlp.solution_evaluator import evaluate_solution
 from app.nlp.recommender import recommend
 
-def run_pipeline(text: str):
-    text_clean = clean_text(text)
-    category = classify(text_clean)
+#from app.llm.reasoning import analyze_feedback
+from app.llm.reasoning import analyze_feedback
 
-    problem = None
-    solution_given = None
-    solution_valid = None
-    recommended = None
 
-    if category == "complaint":
-        problem = extract_problem(text_clean)
-        if detect_solution(text_clean):
-            solution_given = text
-            solution_valid = evaluate_solution(text_clean)
-        recommended = recommend(problem)
+# def run_pipeline(text: str):
+#     text_clean = clean_text(text)
+#     category = classify(text_clean)
+
+#     problem = None
+#     solution_given = None
+#     solution_valid = None
+#     recommended = None
+
+#     if category == "complaint":
+#         problem = extract_problem(text_clean)
+#         if detect_solution(text_clean):
+#             solution_given = text
+#             solution_valid = evaluate_solution(text_clean)
+#         recommended = recommend(problem)
+
+#     return{
+#         "text": text,
+#         "category": category,
+#         "problem": problem,
+#         "customer_solution": solution_given,
+#         "solution_valid": solution_valid,
+#         "recommended_solution": recommended
+#     }
+
+def process_feedback(text):
+    category = classify(text)
+    problem = extract_problem(text)
+    suggestion = detect_solution(text)
+    rule_solution = recommend(problem)
+    llm_result = analyze_feedback(
+        text,
+        category,
+        problem,
+        suggestion
+    )
 
     return{
-        "text": text,
-        "category": category,
-        "problem": problem,
-        "customer_solution": solution_given,
-        "solution_valid": solution_valid,
-        "recommended_solution": recommended
+        "category" : category,
+        "problem" : problem,
+        "suggestion" : suggestion,
+        "rule_solution" : rule_solution,
+        "llm_analytics" : llm_result
     }

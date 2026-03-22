@@ -8,11 +8,18 @@ class Feedback(Base):
     text = Column(Text)
     category = Column(String)
     #complaint / compliment
-
     problem = Column(String)
-    customer_solution = Column(String)
-    solution_valid = Column(String)
-    recommended_solution = Column(String)
+    suggestion = Column(Text)
+    rule_suggestion = Column(Text)
+    llm_analysis = Column(Text)
+    final_solution = Column(Text)
+
+
+
+
+    #customer_solution = Column(String)
+    #solution_valid = Column(String)
+    #recommended_solution = Column(String)
 
     created_at = Column(DateTime, 
                         default=datetime.utcnow)
