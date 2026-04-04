@@ -86,7 +86,9 @@ from sqlalchemy import create_engine
 from app.core.env import DB_URL
 
 
-engine = create_engine(DB_URL)
+engine = create_engine(
+    DB_URL,
+    connect_args={"check_same_thread":False})
 
 
 def load_data():
@@ -214,6 +216,7 @@ app.layout = html.Div([
 def update_dashboard(n):
 
     df = load_data()
+    print("ROWS:", len(df))
 
     if df.empty:
 
@@ -226,6 +229,19 @@ def update_dashboard(n):
         )
 
     # ---------- stats ----------
+    ###########################################################################################
+    if "embedding" in df.columns:
+        df = df.drop(columns=["embedding"])
+    
+    #convert timestamp to string
+    if "created_at" in df.columns:
+        df["created_at"] = df["created_at"].astype(str)
+    
+    ############################################################################################
+
+
+
+
     stats = f"Total feedback: {len(df)}"
 
     # ---------- category ----------
@@ -274,5 +290,19 @@ def update_dashboard(n):
         time_fig,
         df.to_dict("records"),
     )
+
+
+
+
+
+
+
+
+
+
+
+
+
+#usiguze murima    
 if __name__ == "__main__":
  app.run(debug=True)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, LargeBinary
 from datetime import datetime
 from app.database.db import Base
 
@@ -13,13 +13,8 @@ class Feedback(Base):
     rule_suggestion = Column(Text)
     llm_analysis = Column(Text)
     final_solution = Column(Text)
+    embedding = Column(LargeBinary)
 
-
-
-
-    #customer_solution = Column(String)
-    #solution_valid = Column(String)
-    #recommended_solution = Column(String)
-
-    created_at = Column(DateTime, 
-                        default=datetime.utcnow)
+    created_at = Column(
+        DateTime, 
+        default=datetime.utcnow)

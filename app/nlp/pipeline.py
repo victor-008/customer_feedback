@@ -64,7 +64,8 @@ from app.nlp.problem_extractor import extract_problem
 from app.nlp.solution_detector import detect_solution
 from app.services.recommender import recommend
 from app.llm.reasoning import analyze_feedback
-from app.knowledge.retriever import retrieve_solution
+#from app.knowledge.retriever import retrieve_solution
+from app.knowledge.db_retriever import retrieve_from_db
 
 
 def process_feedback(text):
@@ -79,7 +80,7 @@ def process_feedback(text):
 
     
     if problem:
-        rag_solution = retrieve_solution(problem)
+        rag_solution = retrieve_from_db(problem)
     else:
         rag_solution = "No problem detected"
 

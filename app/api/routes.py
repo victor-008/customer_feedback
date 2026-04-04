@@ -38,3 +38,13 @@ def feedback(text: str):
     save_feedback(result)
 
     return result
+
+#chat endpoint
+@router.post("/chat")
+def chat(text: str):
+    result = process_feedback(text)
+    save_feedback(result)
+    
+    return{
+        "reply": result["final_solution"]
+    }
