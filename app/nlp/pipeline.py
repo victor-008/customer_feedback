@@ -5,7 +5,11 @@ from app.nlp.solution_detector import detect_solution
 from app.services.recommender import recommend
 from app.llm.reasoning import analyze_feedback
 #from app.knowledge.retriever import retrieve_solution
-from app.knowledge.db_retriever import retrieve_from_db
+#from app.knowledge.db_retriever import retrieve_from_db
+from app.knowledge.faiss_retriever import retrieve_from_faiss
+
+
+
 
 
 def process_feedback(text):
@@ -16,12 +20,19 @@ def process_feedback(text):
 
     suggestion = detect_solution(text)
 
-    #rule_solution = recommend(problem)
+    #fallback if  problem is None
+    if not problem or problem.strip() == "":
+        problem = text
 
-    if problem:
-        rag_solution = retrieve_from_db(problem)
+    #get multiple solutions
+    #retrieved = retrieve_from_db(problem, top_k=3)
+    retrieved = retrieve_from_faiss(problem, top_k=3)
+
+
+    if retrieved:
+        rag_solution = "\n".join(retrieved)
     else:
-        rag_solution = "No problem detected"
+        rag_solution = "No similar past solutions found"
 
     llm_analysis = analyze_feedback(
         text,
@@ -31,7 +42,7 @@ def process_feedback(text):
         rag_solution
     )
 
-    final_solution = llm_analysis
+    #final_solution = llm_analysis
 
     return {
 
@@ -47,5 +58,5 @@ def process_feedback(text):
 
         "llm_analysis": llm_analysis,
 
-        "final_solution": final_solution,
+        "final_solution": llm_analysis,
     }

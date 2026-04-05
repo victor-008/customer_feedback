@@ -11,7 +11,7 @@ def feedback(text: str):
     result = process_feedback(text)
 
     #addition
-    #result["text"] = text
+    result["text"] = text
 
     save_feedback(result)
 

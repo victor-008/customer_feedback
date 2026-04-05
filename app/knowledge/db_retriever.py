@@ -1,52 +1,81 @@
-#RAG using db
-import numpy as np
+# #RAG using db
+# import numpy as np
+# from sqlalchemy.orm import Session
+# from app.database.db import SessionLocal
+# from app.database.models import Feedback
+# from sentence_transformers import SentenceTransformer
 
-from sqlalchemy.orm import Session
 
+# model = SentenceTransformer("all-MiniLM-L6-v2")
+
+
+# def retrieve_from_db(problem, top_k=3):
+
+#     #if not problem:
+#      #   return "No known solution"
+
+#     db = SessionLocal()
+
+#     rows = db.query(Feedback).all()
+#     if not rows:
+#         return []
+    
+#     query_vec = model.encode([problem])[0]
+#     results = []
+
+#     for row in rows:
+#         if not row.embedding:
+#             continue
+
+#         emb = np.frombuffer(row.embedding, dtype=np.float32)
+#         sim = np.dot(query_vec, emb) / (np.linalg.norm(query_vec) * np.linalg.norm(emb))
+#         results.append((sim, row))
+#     db.close()
+
+#     #sort y similarity
+#     results.sort(key=lambda x: x[0], reverse=True)
+#     top = results[:top_k]
+
+#     return [
+#         r[1].final_solution
+#         for r in top
+#         if r[1].final_solution
+#         ]
+
+
+from app.knowledge.faiss_manager import search_index
 from app.database.db import SessionLocal
+#from app.db.models import Feedback
 from app.database.models import Feedback
 
-from sentence_transformers import SentenceTransformer
 
-
-model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
-)
-
-
-def retrieve_from_db(problem):
-
+def retrieve_from_db(problem: str):
     if not problem:
-        return "No known solution"
+        return "No problem detected"
 
     db = SessionLocal()
 
-    rows = db.query(Feedback).all()
+    try:
+        ids = search_index(problem, k=3)
 
-    db.close()
+        if not ids:
+            return "No similar cases found"
 
-    if not rows:
-        return "No knowledge yet"
+        results = (
+            db.query(Feedback)
+            .filter(Feedback.id.in_(ids))
+            .all()
+        )
 
-    query_vec = model.encode([problem])[0]
+        if not results:
+            return "No solutions found"
 
-    best = None
-    best_score = 1e9
+        # Combine solutions
+        solutions = [
+            r.final_solution for r in results if r.final_solution
+        ]
 
-    for r in rows:
+        return " | ".join(solutions[:2])  # keep short
 
-        if not r.embedding:
-            continue
-
-        vec = np.frombuffer(r.embedding)
-
-        score = np.linalg.norm(vec - query_vec)
-
-        if score < best_score:
-            best_score = score
-            best = r.final_solution
-
-    if best:
-        return best
-
-    return "No similar case"
+    finally:
+        db.close()

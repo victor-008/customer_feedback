@@ -81,7 +81,8 @@ def update_dashboard(n):
     # ---------- stats ----------
     ###########################################################################################
     if "embedding" in df.columns:
-        df = df.drop(columns=["embedding"])
+        #df = df.drop(columns=["embedding"])
+        df = df.drop(columns=["embedding"], errors="ignore")
     
     #convert timestamp to string
     if "created_at" in df.columns:
@@ -112,6 +113,7 @@ def update_dashboard(n):
         values="count",
         title="Problem"
     )
+ 
 
     # ---------- time ----------
     if "created_at" in df.columns:
@@ -130,14 +132,14 @@ def update_dashboard(n):
     else:
         time_fig = {}
 
-    return (
-        stats,
-        category_fig,
-        problem_fig,
-        time_fig,
-        df.to_dict("records"),
-    )
-
+    # return (
+    #     stats,
+    #     category_fig,
+    #     problem_fig,
+    #     time_fig,
+    #     df.to_dict("records"),
+    # )
+    return stats, category_fig, problem_fig, time_fig, df.to_dict("records")
 #usiguze murima    
 if __name__ == "__main__":
  app.run(debug=True)
