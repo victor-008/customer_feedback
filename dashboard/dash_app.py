@@ -1,83 +1,3 @@
-
-# from dash import Dash, html, dcc, dash_table
-# import pandas as pd
-# import plotly.express as px
-
-
-# from sqlalchemy import create_engine
-# from app.core.env import DB_URL
-
-# engine = create_engine(DB_URL)
-
-
-# def load_data():
-#     try:
-
-#         df = pd.read_sql("SELECT * FROM feedback", engine)
-#     except:
-#         df = pd.DataFrame()
-#     return df
-
-
-# app = Dash(__name__)
-
-# def serve_layout():
-#     df = load_data()
-#     if len(df) == 0:
-#         return html.Div([
-#             html.H1("No data yet")
-#         ])
-#     # category_fig = px.bar(
-#     #     df["category"].value_counts(),
-#     #     title="Category"
-#     # )
-#     # problem_fig = px.bar(
-#     #     df["problem"].value_counts(),
-#     #     title="Problems"
-#     # )
-
-#     category_counts = df["category"].value_counts().reset_index()
-#     category_counts.columns = ["category", "count"]
-
-#     category_fig = px.pie(
-#         category_counts,
-#         names="category",
-#         values="count",
-#         title="Category Distribution"
-#     )
-
-
-#     problem_counts = df["problem"].value_counts().reset_index()
-#     problem_counts.columns = ["problem", "count"]
-
-#     problem_fig = px.pie(
-#         problem_counts,
-#         names="problem",
-#         values="count",
-#         title="Problem Distribution"
-#     )
-
-
-#     return html.Div([
-#         html.H1("Feedback Automation Dashboard"),
-#         html.H3(f"Total feedback: {len(df)}"),
-#         dcc.Graph(figure=category_fig),
-#         dcc.Graph(figure=problem_fig),
-
-#         dash_table.DataTable(
-#             data=df.to_dict("records"),
-#             page_size=10
-#         )
-#     ])
-    
-# app.layout = serve_layout
-
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
-
-
-
 from dash import Dash, html, dcc, dash_table, Input, Output
 import pandas as pd
 import plotly.express as px
@@ -89,7 +9,6 @@ from app.core.env import DB_URL
 engine = create_engine(
     DB_URL,
     connect_args={"check_same_thread":False})
-
 
 def load_data():
     try:
@@ -103,7 +22,6 @@ def load_data():
 
         df = pd.DataFrame()
     return df
-
 
 app = Dash(__name__)
 
@@ -136,74 +54,6 @@ app.layout = html.Div([
     )
 
 ])
-
-
-# @app.callback(
-#     Output("stats", "children"),
-#     Output("category-chart", "figure"),
-#     Output("problem-chart", "figure"),
-#     Output("time-chart", "figure"),
-#     Output("table", "data"),
-#     Input("interval", "n_intervals"),
-# )
-# def update_dashboard(n):
-
-#     df = load_data()
-
-#     if len(df) == 0:
-#         return "No data", {}, {}, {}, []
-
-    
-#     stats = f"Total feedback: {len(df)}"
-
-#     #  category pie
-#     category_counts = df["category"].value_counts().reset_index()
-#     category_counts.columns = ["category", "count"]
-
-#     category_fig = px.pie(
-#         category_counts,
-#         names="category",
-#         values="count",
-#         title="Category Distribution"
-#     )
-
-#     #problem pie
-#     problem_counts = df["problem"].value_counts().reset_index()
-#     problem_counts.columns = ["problem", "count"]
-
-#     problem_fig = px.pie(
-#         problem_counts,
-#         names="problem",
-#         values="count",
-#         title="Problem Distribution"
-#     )
-
-#     #time chart
-#     if "created_at" in df.columns:
-
-#         df["created_at"] = pd.to_datetime(df["created_at"])
-
-#         time_fig = px.histogram(
-#             df,
-#             x="created_at",
-#             title="Feedback over time"
-#         )
-
-#     else:
-#         time_fig = {}
-
-#     return (
-#         stats,
-#         category_fig,
-#         problem_fig,
-#         time_fig,
-#         df.to_dict("records"),
-#     )
-
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
-
 
 @app.callback(
     Output("stats", "children"),
@@ -238,9 +88,6 @@ def update_dashboard(n):
         df["created_at"] = df["created_at"].astype(str)
     
     ############################################################################################
-
-
-
 
     stats = f"Total feedback: {len(df)}"
 
@@ -290,18 +137,6 @@ def update_dashboard(n):
         time_fig,
         df.to_dict("records"),
     )
-
-
-
-
-
-
-
-
-
-
-
-
 
 #usiguze murima    
 if __name__ == "__main__":

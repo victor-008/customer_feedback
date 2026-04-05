@@ -1,5 +1,4 @@
 #RAG using db
-
 import numpy as np
 
 from sqlalchemy.orm import Session

@@ -54,13 +54,6 @@ training_args = TrainingArguments(
     num_train_epochs=3,
     #evaluation_strategy="epoch",
 )
-# training_args = TrainingArguments(
-#     output_dir="models/results",
-#     learning_rate=2e-5,
-#     per_device_train_batch_size=8,
-#     per_device_eval_batch_size=8,
-#     num_train_epochs=3,
-# )
 
 trainer = Trainer(
     model=model,
@@ -68,14 +61,6 @@ trainer = Trainer(
     train_dataset=train_dataset,
     eval_dataset=test_dataset,
 )
-# trainer = Trainer(
-#     model=model,
-#     args=training_args,
-#     train_dataset=train_dataset,
-#     eval_dataset=test_dataset,
-#     eval_strategy="epoch",
-# )
-
 
 trainer.train()
 
