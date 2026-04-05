@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    container_name: feedback_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  dashboard:
+    build: .
+    container_name: feedback_dashboard
+    command: python dashboard/dash_app.py
+    ports:
+      - "8050:8050"
+    volumes:
+      - .:/app
+
+  chat:
+    build: .
+    container_name: feedback_chat
+    command: python dashboard/chat.py
+    ports:
+      - "8051:8051"
+    volumes:
+      - .:/app
+    
+    
+
