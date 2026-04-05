@@ -18,7 +18,6 @@ def process_feedback(text):
 
     #rule_solution = recommend(problem)
 
-    
     if problem:
         rag_solution = retrieve_from_db(problem)
     else:

@@ -52,8 +52,11 @@ training_args = TrainingArguments(
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     num_train_epochs=3,
+<<<<<<< HEAD
     #evaluation_strategy="epoch",
 )
+=======
+>>>>>>> 9c77650ec1986b4d289b07b2128ccbab5ca38b38
 
 trainer = Trainer(
     model=model,

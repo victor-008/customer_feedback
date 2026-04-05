@@ -3,7 +3,6 @@ from app.database.db import SessionLocal
 from app.database.models import Feedback
 from app.knowledge.emedder import get_embedding
 
-
 def save_feedback(data):
 
     db = SessionLocal()

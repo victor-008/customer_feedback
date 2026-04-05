@@ -5,7 +5,6 @@ from app.services.feedback_service import save_feedback
 
 router = APIRouter()
 
-
 @router.post("/feedback")
 def feedback(text: str):
 
