@@ -3,10 +3,6 @@ import numpy as np
 #from sentence_transformers import SentenceTransformer
 from app.knowledge.embedder import model
 
-
-#model = SentenceTransformer("all-MiniLM-L6-v2")
-
-# Vector dimension (MiniLM = 384)
 DIM = 384
 
 index = faiss.IndexFlatL2(DIM)
