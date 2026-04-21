@@ -1,7 +1,8 @@
 #new after llm
 from app.database.db import SessionLocal
 from app.database.models import Feedback
-from app.knowledge.emedder import get_embedding
+from app.knowledge.embedder import get_embedding
+
 from app.knowledge.faiss_manager import add_to_index
 
 

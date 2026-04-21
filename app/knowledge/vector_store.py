@@ -1,10 +1,10 @@
-from sentence_transformers import SentenceTransformer
+#from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 from app.knowledge.kb_data import KB
+from app.knowledge.embedder import model
 
-
-model = SentenceTransformer("all-MiniLM-L6-v2")
+#model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 texts = [x["problem"] for x in KB]

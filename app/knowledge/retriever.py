@@ -1,11 +1,12 @@
-from sentence_transformers import SentenceTransformer
+#from sentence_transformers import SentenceTransformer
 import numpy as np
 
 from app.knowledge.vector_store import index
 from app.knowledge.kb_data import KB
+from app.knowledge.embedder import model
 
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+#model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def retrieve_solution(problem):
